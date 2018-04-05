@@ -1,3 +1,4 @@
+// Array with the locations to be loaded in the application
 var allLocations = [
     {id: 0, name: 'Ponte 25 de Abril'},
     {id: 1, name: 'Basílica da Estrela'},
@@ -11,6 +12,7 @@ var allLocations = [
     {id: 9, name: 'LxFactory'}
 ];
 
+// Checks if a given substring exists in a string
 ko.utils.stringContains = function (string, filter) {        	
     string = string || "";
     if (filter.length > string.length)

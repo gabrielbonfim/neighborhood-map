@@ -29,6 +29,9 @@ git clone https://github.com/gabrielbonfim/neighborhood-map
 ```
 Open "neighborhood-map/index.html" in the web browser
 ```
+### Screenshot
+![image1](/img/app.png)
+
 ### Enjoy
 &#128526;
 

@@ -1,4 +1,4 @@
-# neighborhood-map
+# Neighborhood Map
 This project consists on a single page application where some of the points of interest in Lisbon are identifies on Google Maps. The locations list can be filtered and by selecting a location, the user is presented with a picture of the place, address and the web page link if is available.
 
 ## [Project Files](https://github.com/gabrielbonfim/neighborhood-map)

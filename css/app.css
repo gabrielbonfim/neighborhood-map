@@ -1,0 +1,111 @@
+/* 
+    Created on : Mar 28, 2018, 11:46:23 AM
+    Author     : Gabriel
+*/
+
+* {
+    box-sizing: border-box;
+}
+html,
+body {
+    min-width: 500px;
+    margin: 0;
+    background-color: #888;
+    height: 100%;
+    width: 100%;
+    font-family: Roboto, Tahoma, sans-serif;
+}
+
+.container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+
+/* Menu */
+
+.sidenav {
+    width: 400px;
+    background-color: #111;
+    transition: 0.5s;
+    height: 100%;
+    left: 0;
+}
+
+h2 {
+    margin-top: 3px;
+    margin-left: 10px;
+    color: #fff;
+}
+
+.sidenav a {
+    text-decoration: none;
+    margin-left: 5px;
+    font-size: 16px;
+    color: #888;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: #feaf24;
+}
+
+#filter-text {
+    width: 80%;
+    height: 30px;
+}
+
+#filter-button {
+    width: 20%;
+    height: 30px;
+    background-color: #48f;
+    color: #fff;
+    margin-left: -5px;
+}
+
+ul {
+    margin-left: -40px;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+/* Map */
+
+.map {
+    bottom:0;
+    height: 100%;
+    width: 100%;
+    right: 0px;
+}
+
+#map {
+    height: 96%;
+    width: 100%;
+}
+
+.map-top-bar {
+    background-color: #111;
+    width: 100%;
+    right: 0;
+    height: 38px;
+}
+
+#map-top-bar-menu {
+    width: 40px;
+}
+
+/* Foursquare logo */
+
+#logo_foursquare {
+    bottom: 0;
+    position: absolute;
+    width: 100px;
+    margin-left: 5px;
+}
+
+#logo_foursquare_small {
+    width: 20px;
+}

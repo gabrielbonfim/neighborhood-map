@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Neighborhood Map</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Font - Roboto -->
+        <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400" rel="stylesheet">
+        <!-- App CSS-->
+        <link rel="stylesheet" href="css/app.css">
+    </head>
+    <body>
+        <div class="container">
+            <aside class="sidenav">
+                <h2>Points of Interest - Lisbon</h2>
+                <div id="filter-div">
+                    <input id="filter-text" type="text" data-bind="value: filter">
+                    <input id="filter-button" type="button" value="Filter" data-bind="click: setList">
+                </div>
+                <ul id="places-list" data-bind="foreach: currentList">
+                    <li><a class="place" href="#" data-bind="text: name, attr: {'id': id}"></a></li>
+                </ul>
+                <img id="logo_foursquare" src="img/foursquare.png" alt="Foursquare">
+            </aside>
+            <section class="map">
+                <div class="map-top-bar">
+                    <a href="#">
+                        <img id="map-top-bar-menu" src="img/menu.png" alt="Menu">
+                    </a>
+                </div>
+                <div id="map"></div>
+            </section>
+        </div>
+        <!-- Application Javascript -->
+        <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="js/knockout-3.4.2.js"></script>
+        <script type="text/javascript" src="js/app-k.js"></script>
+        <script type="text/javascript" src="js/app.js"></script>
+        <script type="text/javascript" src="js/app-jq.js"></script>
+        <script async defer
+            src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyC9rL0bFa1r0gADcLsxjbNzwU9PFYCcWOQ&v=3&callback=initMap">
+        </script>
+    </body>
+</html>

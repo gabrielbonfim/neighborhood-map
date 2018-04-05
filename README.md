@@ -27,7 +27,7 @@ git clone https://github.com/gabrielbonfim/neighborhood-map
 
 ### Usage
 ```
-Open "neighborhood-map/index.html" in the web browser
+Open "neighborhood-map\index.html" in the web browser
 ```
 ### Screenshot
 ![image1](/img/app.png)

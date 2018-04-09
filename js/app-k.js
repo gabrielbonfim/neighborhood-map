@@ -32,7 +32,12 @@ var AppViewModel = function() {
                     return ko.utils.stringContains(item.name.toLowerCase(), self.filter().toLowerCase());
                 });
             }
+            setOnMap;
         });
+    };
+    
+    self.selectMarker = function() {
+        markerClick(this);
     };
 
     self.allLocations = ko.observableArray(allLocations);

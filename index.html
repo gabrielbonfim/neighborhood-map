@@ -18,7 +18,7 @@
                     <input id="filter-button" type="button" value="Filter" data-bind="click: setList">
                 </div>
                 <ul id="places-list" data-bind="foreach: currentList">
-                    <li><a class="place" href="#" data-bind="text: name, attr: {'id': id}"></a></li>
+                    <li><a class="place" href="#" data-bind="text: name, attr: {'id': id}, click: $parent.selectMarker"></a></li>
                 </ul>
                 <img id="logo_foursquare" src="img/foursquare.png" alt="Foursquare">
             </aside>
@@ -32,12 +32,12 @@
             </section>
         </div>
         <!-- Application Javascript -->
-        <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
-        <script type="text/javascript" src="js/knockout-3.4.2.js"></script>
-        <script type="text/javascript" src="js/app-k.js"></script>
-        <script type="text/javascript" src="js/app.js"></script>
-        <script type="text/javascript" src="js/app-jq.js"></script>
-        <script async defer
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script src="js/knockout-3.4.2.js"></script>
+        <script src="js/app-jq.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/app-k.js"></script>
+        <script onerror="mapLoadError()" async defer
             src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyC9rL0bFa1r0gADcLsxjbNzwU9PFYCcWOQ&v=3&callback=initMap">
         </script>
     </body>

@@ -61,16 +61,16 @@ $(window).on('load', function() {
     });
     
     // Updates marker color on click
-    $('.place').click(function() {
-        var id = $(this).attr('id');
+    window.markerClick = function(li) {
+        var id = li['id'];
         setAllToDefault();
         // Adds class 'selected' used to ignore mouseover and mouse leave
         // when selected
-        $(this).addClass('selected');
-        $(this).css('color', listSelectedColor);
+        $('#' + id).addClass('selected');
+        $('#' + id).css('color', listSelectedColor);
         markers[id].setIcon(selectedIcon);
         populateInfoWindow(markers[id], largeInfowindow);
-    });
+    };
     
     // Sets all markers to the default icon and list to the default color
     function setAllToDefault() {
@@ -170,14 +170,18 @@ $(window).on('load', function() {
     }
     
     // Creates on the map the actual location on the side bar list
-    function setOnMap() {
-        for (var i = 0; i < markers.length; i++) {
-          markers[i].setMap(null);
+    window.setOnMap = function() {
+        try {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+            $('.place').each(function() {
+                var id = $(this).attr('id');
+                markers[id].setMap(map);
+            });
+        } catch(e) {
+            
         }
-        $('.place').each(function() {
-            var id = $(this).attr('id');
-            markers[id].setMap(map);
-        });
     }
     
     // Takes as input the color for the marker, and returns a marker with that color

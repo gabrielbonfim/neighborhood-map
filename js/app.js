@@ -8,8 +8,6 @@ function initMap() {
     });
 }
 
-setTimeout(function(){ 
-    if(map === null) {
-        alert('Error loading map');
-    }
-}, 3000);
+function mapLoadError() {
+    alert('Error loading map');
+}

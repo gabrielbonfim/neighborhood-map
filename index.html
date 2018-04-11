@@ -14,11 +14,11 @@
             <aside class="sidenav">
                 <h2>Points of Interest - Lisbon</h2>
                 <div id="filter-div">
-                    <input id="filter-text" type="text" data-bind="value: filter">
+                    <input id="filter-text" type="text" data-bind="value: filter, event: { change: setList }">
                     <input id="filter-button" type="button" value="Filter" data-bind="click: setList">
                 </div>
                 <ul id="places-list" data-bind="foreach: currentList">
-                    <li><a class="place" href="#" data-bind="text: name, attr: {'id': id}, click: $parent.selectMarker"></a></li>
+                    <li><a class="place" href="#" data-bind="text: name, attr: {'id': id}, click: $parent.selectMarker, event: { mouseover: $parent.onMouseEnter, mouseout: $parent.onMouseLeave }"></a></li>
                 </ul>
                 <img id="logo_foursquare" src="img/foursquare.png" alt="Foursquare">
             </aside>

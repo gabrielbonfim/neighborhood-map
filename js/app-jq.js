@@ -6,6 +6,8 @@ $(window).on('load', function() {
     // Markers array
     var markers = [];
     
+    var selectedMarker = null;
+    
     // Markers icons
     var defaultIcon = makeMarkerIcon('f74');
     var highlightedIcon = makeMarkerIcon('fc2');
@@ -29,7 +31,7 @@ $(window).on('load', function() {
     // Toggles menu
     $('#map-top-bar-menu').click(function() {
         if(menu_extend) {
-            $('.sidenav').css('margin-left', '-350px');
+            $('.sidenav').css('margin-left', '-400px');
             menu_extend = false;
         } else {
             $('.sidenav').css('margin-left', '0px');
@@ -37,40 +39,30 @@ $(window).on('load', function() {
         }
     });
     
-    // Filtering the list on the side menu, updates the visible markers
-    $('#places-list').on('DOMSubtreeModified', function() {
-        setOnMap();
-    });
-    
-    // Updates marker color on mouse over    
-    $('.place').mouseover(function() {
-        if(!$(this).hasClass('selected')) {
-            var id = $(this).attr('id');
-            $(this).css('color', listHighlightedItem);
+    // Updates marker color on mouse over
+    window.mouseenter = function(id) {
+        if(selectedMarker != id) {
+            $('#'+id).css('color', listHighlightedItem);
             markers[id].setIcon(highlightedIcon);
         }
-    });
+    }
     
     // Updates marker color on mouse leave
-    $('.place').mouseleave(function() {
-        if(!$(this).hasClass('selected')) {
-            var id = $(this).attr('id');
-            $(this).css('color', listDefaultColor);
+    window.mouseleave = function(id) {
+        if(selectedMarker != id) {
+            $('#'+id).css('color', listDefaultColor);
             markers[id].setIcon(defaultIcon);
         }
-    });
+    }
     
     // Updates marker color on click
-    window.markerClick = function(li) {
-        var id = li['id'];
+    window.markerClick = function(id) {
         setAllToDefault();
-        // Adds class 'selected' used to ignore mouseover and mouse leave
-        // when selected
-        $('#' + id).addClass('selected');
+        selectedMarker = id;
         $('#' + id).css('color', listSelectedColor);
         markers[id].setIcon(selectedIcon);
         populateInfoWindow(markers[id], largeInfowindow);
-    };
+    }
     
     // Sets all markers to the default icon and list to the default color
     function setAllToDefault() {
@@ -78,45 +70,48 @@ $(window).on('load', function() {
             item.setIcon(defaultIcon);
         });
         $('.place').css('color', listDefaultColor);
-        $('.place').removeClass('selected');
     }
     
     // Called initially to create an array with the markers locations
     function setLocations() {
         var geocoder = new google.maps.Geocoder();
-        $('.place').each(function() {
-            var id = $(this).attr('id');
-            geocoder.geocode({address: $(this).text()}, function(results, status) {
-                if (status === 'OK') {
-                    map.setCenter(results[0].geometry.location);
-                    var marker = new google.maps.Marker({
-                        map: map,
-                        position: results[0].geometry.location,
-                        icon: defaultIcon,
-                        id: id
-                    });
-                    // Add venueId to the marker
-                    setVenueID(id, results[0].geometry.location.toString());
-                    markers[id] = marker;
-                    marker.addListener('mouseover', function() {
-                        if (largeInfowindow.marker != marker) {
-                            this.setIcon(highlightedIcon);
-                        }
-                    });
-                    marker.addListener('mouseout', function() {
-                        if (largeInfowindow.marker != marker) {
-                            this.setIcon(defaultIcon);
-                        }
-                    });
-                    marker.addListener('click', function() {
-                        setAllToDefault();
-                        this.setIcon(selectedIcon);
-                        populateInfoWindow(this, largeInfowindow);
-                    });
-                } else {
-                      alert('Geocode was not successful for the following reason: ' + status);
-                }
-                    });
+        for(var i = 0; i < allLocations.length; i++) {
+            setLoc(geocoder, i);
+        }
+    }
+    
+    // Create entry in the initial markers array
+    function setLoc(geocoder, id) {
+        geocoder.geocode({address: allLocations[id].name}, function(results, status) {
+            if (status === 'OK') {
+                map.setCenter(results[0].geometry.location);
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location,
+                    icon: defaultIcon,
+                    id: id
+                });
+                // Add venueId to the marker
+                setVenueID(id, results[0].geometry.location.toString());
+                markers[id] = marker;
+                marker.addListener('mouseover', function() {
+                    if (largeInfowindow.marker != marker) {
+                        this.setIcon(highlightedIcon);
+                    }
+                });
+                marker.addListener('mouseout', function() {
+                    if (largeInfowindow.marker != marker) {
+                        this.setIcon(defaultIcon);
+                    }
+                });
+                marker.addListener('click', function() {
+                    setAllToDefault();
+                    this.setIcon(selectedIcon);
+                    populateInfoWindow(this, largeInfowindow);
+                });
+            } else {
+                  alert('Geocode was not successful for the following reason: ' + status);
+            }
         });
     }
     
@@ -157,7 +152,11 @@ $(window).on('load', function() {
             content += '<img id="logo_foursquare_small" src="img/foursquare_small.png" alt="Foursquare logo small">';
             content += '<h3>' + venue.name + '</h3>';
             content += '<img src="' + venue.bestPhoto.prefix + '250x250' +  venue.bestPhoto.suffix + '" alt="Location Photo"><br>';
-            content += '<br><span>' + venue.location.formattedAddress[0] + '</span><br><span>' + venue.location.formattedAddress[1]; + '</span>';
+            if(!venue.location.formattedAddress[0] && !venue.location.formattedAddress[1]) {
+                content += '<br><span>No Address</span>';
+            } else {
+                content += '<br><span>' + venue.location.formattedAddress[0] + '</span><br><span>' + venue.location.formattedAddress[1]; + '</span>';
+            }
             if(venue.url) {
                 content += '<hr><a href="' + venue.url + '" target="_blank">' + venue.url + '</a>';
             } else {
@@ -170,15 +169,14 @@ $(window).on('load', function() {
     }
     
     // Creates on the map the actual location on the side bar list
-    window.setOnMap = function() {
+    window.setOnMap = function(currentLoc) {
         try {
-            for (var i = 0; i < markers.length; i++) {
+            for(var i = 0; i < markers.length; i++) {
                 markers[i].setMap(null);
             }
-            $('.place').each(function() {
-                var id = $(this).attr('id');
-                markers[id].setMap(map);
-            });
+            for(var i = 0; i < currentLoc.length; i++) {
+                markers[currentLoc[i].id].setMap(map);
+            }
         } catch(e) {
             
         }

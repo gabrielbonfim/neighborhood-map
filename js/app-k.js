@@ -23,27 +23,30 @@ ko.utils.stringContains = function (string, filter) {
 var AppViewModel = function() {
     var self = this;
 
-    self.setList = function() {
-        self.currentList = ko.computed(function() {
-            if(self.filter() === '') {
-                return self.allLocations();
-            } else {
-                return ko.utils.arrayFilter(self.allLocations(), function(item) {
-                    return ko.utils.stringContains(item.name.toLowerCase(), self.filter().toLowerCase());
-                });
-            }
-            setOnMap;
-        });
-    };
-    
-    self.selectMarker = function() {
-        markerClick(this);
-    };
-
-    self.allLocations = ko.observableArray(allLocations);
     self.filter = ko.observable('');
-    self.setList();
-    
+    self.allLocations = ko.observableArray(allLocations);
+    self.currentList = ko.computed(function() {
+        if(self.filter() === '') {
+            return self.allLocations();
+        } else {
+            return ko.utils.arrayFilter(self.allLocations(), function(item) {
+                return ko.utils.stringContains(item.name.toLowerCase(), self.filter().toLowerCase());
+            });
+        }
+    });
+    self.selectMarker = function() {
+        markerClick(this.id);
+    };
+    self.setList = function() {
+        self.currentList;
+        window.setOnMap(self.currentList());
+    };
+    self.onMouseEnter = function() {
+        window.mouseenter(this.id);
+    };
+    self.onMouseLeave = function() {
+        window.mouseleave(this.id);
+    };
 };
 
 ko.applyBindings(new AppViewModel());
